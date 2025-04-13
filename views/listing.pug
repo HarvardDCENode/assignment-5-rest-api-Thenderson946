@@ -1,0 +1,16 @@
+mixin listing(instrument, user)
+  .col-sm-4.rounded.border.border-primary.text-center.align-center
+    img(src=instrument.imageurl style='width: 100%')
+    p Brand: #{instrument.brand} Model: #{instrument.model}
+    p Price: #{instrument.price}
+    p Description: #{instrument.description}
+
+    if user
+      a.btn.btn-danger.m-2(href=`/deleteListing/${instrument.id}`)
+        | Delete
+
+      a.btn.btn-warning.m-2(href=`/editListing/${instrument.id}`)
+        | Edit
+    else
+      p Listed by: #{instrument.username}
+    

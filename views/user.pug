@@ -1,0 +1,13 @@
+extends layout
+include listing.pug
+
+block content
+  h1.text-center Welcome back to Gearheads INC, #{username}
+  
+  h1.ms-3 My Items
+  if instruments
+    #table
+      .row.ms-2
+        each instrument in instruments
+          +listing(instrument, username)
+    

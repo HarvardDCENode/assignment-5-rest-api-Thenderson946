@@ -1,0 +1,26 @@
+extends layout 
+
+block content
+    .col-md-6.col-md-offset-4.m-5
+        if flashMsg.length > 0
+            .alert.alert-danger #{flashMsg}
+        form(action=`/editListing/${instrument.id}` method="POST")
+            .form-group.m-2
+                label Brand: #{instrument.brand}
+                input.form-control(type='text', name='brand', value=instrument.brand, required='true')
+            .form-group.m-2
+                label Model:
+                input.form-control(type='text', name='model', value=instrument.model, required='true')
+            .form-group.m-2
+                label Description:
+                textarea.form-control(type='text', name='description', placeholder=instrument.description, rows="3", required='true')
+                    | #{instrument.description}
+            .form-group.m-2
+                label Price:
+                input.form-control(type='number', name='price', value=instrument.price, required='true')
+            .form-group.m-2
+                label Open to Trades?
+                input.ms-2(type='checkbox', name='trades', checked=instrument.trades)
+                
+            button.btn.btn-primary(type="submit", style="margin-top: 3rem; margin-left: 2rem")  
+                | Edit Listing

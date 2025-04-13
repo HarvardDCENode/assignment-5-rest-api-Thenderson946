@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  h2.text-center(style='margin-top: 2rem') Welcome to Gearhead Inc, one of the places of all time for buying, selling and trading instruments
+  h3(style='margin-top: 3rem; margin-left: 1.5rem') Browse our current listings:
+  ul.list-unstyled.d-flex
+    li.nav-item.mx-5(style='font-size: 3rem')
+      a.nav-link(href='/browse/guitars') Guitars
+    li.nav-item.mx-5(style='font-size: 1rem; margin-top: 2rem')
+      a.nav-link(href='/browse/notGuitars') Not Guitars
+    

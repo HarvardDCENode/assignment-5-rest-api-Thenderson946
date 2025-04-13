@@ -1,0 +1,19 @@
+extends layout 
+
+block content
+  .text-center
+    h1.m-4.text-center Welcome to Gearheads!
+    h4.m-4 Sign into your account:
+    if flashMsg.length > 0
+      .alert.alert-danger #{flashMsg}
+    form(action="login" method="POST")
+        .form-group.justify-content-center.m-2
+            input(type='text', name='username', placeholder='Username').form-control-lg
+        .form-group.justify-content-center.m-2
+            input(type='password', name='password', placeholder='Password').form-control-lg
+        button.btn.btn-lg.btn-primary.mt-2(type="submit")
+            | Login
+    .ms-4
+      h2 Need an account? Sign up here:
+      button.btn.btn-lg.btn-secondary.mt-2(onclick="window.location.href='/login/create'")
+        |  Create Account

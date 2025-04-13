@@ -1,0 +1,19 @@
+extends layout 
+
+block content
+  .text-center
+    h1.m-4.text-center Welcome to Gearheads!
+    h4.m-4 Create an account:
+    form(action="create" method="POST")
+        .form-group.justify-content-center.m-2
+            input(type='text', name='username', placeholder='Username').form-control-lg
+        .form-group.justify-content-center.m-2
+            input(type='text', name='displayName', placeholder='Display Name').form-control-lg   
+        .form-group.justify-content-center.m-2
+            input(type='text', name='email', placeholder='Email').form-control-lg    
+        .form-group.justify-content-center.m-2
+            input(type='password', name='password', placeholder='Password').form-control-lg
+        .form-group.justify-content-center.m-2
+            input(type='password', name='confPass', placeholder='Confirm Password').form-control-lg    
+        button.btn.btn-lg.btn-primary.mt-2(type="submit")
+            | Submit
