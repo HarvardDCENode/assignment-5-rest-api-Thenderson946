@@ -1,14 +1,14 @@
 const express = require("express");
 const router = express.Router();
 const multer = require("multer");
-const photoController = require("../controllers/photoController");
+const listingController = require("../controllers/listingController");
 const flash = require("express-flash");
 const listingModel = require("../models/listingModel");
 router.use(flash());
 
 const uploader = multer({
-  storage: photoController.storage,
-  fileFilter: photoController.imgFilter,
+  storage: listingController.storage,
+  fileFilter: listingController.imgFilter,
 });
 
 /**
@@ -51,7 +51,6 @@ router.post("/", uploader.single("image"), (req, res, next) => {
     });
 });
 
-
 /**
  * Builds flash messaging
  */
@@ -70,7 +69,5 @@ router.use(function (err, req, res, next) {
     next(err);
   }
 });
-
-
 
 module.exports = router;

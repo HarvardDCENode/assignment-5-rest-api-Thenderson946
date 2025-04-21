@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const mongoose = require("mongoose");
 const dbModels = require("./models/modelExports");
+const apiListings = require("./routes/api/apiListings");
+
 const userModel = dbModels.userModel;
 require("dotenv").config();
 const bcrypt = require("bcrypt");
@@ -61,10 +63,6 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
-
-app.use(express.static("public"));
 // Set all Directory Listings
 app.use("/", routes.directory);
 app.use("/users", routes.users);
@@ -73,10 +71,20 @@ app.use("/createListing", routes.createListing);
 app.use("/deleteListing", routes.deleteListing);
 app.use("/editListing", routes.editListing);
 app.use("/login", routes.login);
+app.use("/api/listings", apiListings);
 
-// Set not found
-app.use((req, res, next) => {
-  res.render("not-found");
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug");
+
+app.use(express.static("public"));
+
+// Catch-all 404 handler
+app.use((req, res) => {
+  if (req.originalUrl.startsWith("/api/")) {
+    res.status(404).json({ error: "API route not found" });
+  } else {
+    res.status(404).render("not-found");
+  }
 });
 
 module.exports = app;
