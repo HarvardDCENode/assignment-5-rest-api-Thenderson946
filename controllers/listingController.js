@@ -68,7 +68,7 @@ class ListingService {
 
   static updateListing(id, updatedModel) {
     return listingModel
-      .findByIdAndUpdate(req.params.id, updatedListing)
+      .findByIdAndUpdate(id, updatedModel)
       .then((data) => {
         return data;
       })
