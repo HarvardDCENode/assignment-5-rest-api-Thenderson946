@@ -36,8 +36,22 @@ router.get("/", (req, res) => {
 });
 
 // listing user
+router.get("/listing/:id", (req, res) => {
+  console.log(req.params.id);
+  ListingService.listingDetails(req.params.id)
+    .then((data) => {
+      res.status(200);
+      res.send(JSON.stringify(data));
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+});
+
+// listing user
 router.get("/:userid", (req, res) => {
-  let username = req.session?.user?.name;
+  let username = req.params.userid;
+  console.log(username);
   if (!username) {
     console.warn("No session user found — defaulting to 'TestUser'");
     username = "TestUser";
@@ -53,36 +67,39 @@ router.get("/:userid", (req, res) => {
 });
 
 // Create Listing
-router.post("/", uploader.single("image"), async (req, res, next) => {
-  const path = "/static/img/" + (req.file ? req.file.filename : "");
-  let newListing = {
-    username: username ? usename : "N/A",
-    brand: reqreq.body.brand,
+router.post("/", async (req, res, next) => {
+  const newListing = {
+    username: req.body.username,
+    brand: req.body.brand,
     model: req.body.model,
     description: req.body.description,
     price: req.body.price,
     trades: req.body.trades === "on",
-    filename: req.file ? req.file.filename : "N/A",
-    mimetype: req.file ? req.file.mimetype : "N/A",
-    imageurl: path,
+    filename: req.body.filename || "",
+    mimetype: req.body.mimetype || "",
+    imageurl: req.body.imageurl || "",
   };
-  const dbListing = new listingModel(newListing);
+
+  console.log(newListing);
 
   try {
-    const listing = await PhotoService.create(dbListing);
-    res.status(201);
-    res.send(JSON.stringify(listing));
+    const dbListing = new listingModel(newListing);
+    const listing = await ListingService.createListing(dbListing);
+
+    res.status(201).json(listing); // Return the created listing
   } catch (err) {
-    res.status(404);
-    res.end();
+    console.error("Error creating listing:", err);
+    res
+      .status(500)
+      .json({ error: "Failed to create listing", details: err.message });
   }
 });
 
 /**
  * Updates listing in db and navigates back to user paged
  */
-router.put("/:id", (req, res, next) => {
-  let updatedListing = {
+router.put("/:id", async (req, res, next) => {
+  const updatedListing = {
     brand: req.body.brand,
     model: req.body.model,
     description: req.body.description,
@@ -90,9 +107,16 @@ router.put("/:id", (req, res, next) => {
     trades: req.body.trades === "on",
   };
 
-  // Find by passed id and update with partial listing
-  ListingService.updateListing(req.params.id, updatedListing);
-  res.redirect("/users/" + req.session.user.name);
+  try {
+    const listing = await ListingService.updateListing(
+      req.params.id,
+      updatedListing
+    );
+    res.status(200).json(listing);
+  } catch (err) {
+    console.error(err);
+    res.status(400).end();
+  }
 });
 
 router.delete("/:id", (req, res, next) => {

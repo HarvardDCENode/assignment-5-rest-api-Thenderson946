@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/HarvardDCENode/assignment-3-expressjs-routing-and-templates-Thenderson946#readme",
   "dependencies": {
+    "axios": "^1.9.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "bootstrap": "^5.3.3",

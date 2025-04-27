@@ -6,11 +6,11 @@ mixin listing(instrument, user)
     p Description: #{instrument.description}
 
     if user
-      a.btn.btn-danger.m-2(href=`/deleteListing/${instrument.id}`)
+      a.btn.btn-danger.m-2(href=`/deleteListing/${instrument._id}`)
         | Delete
 
-      a.btn.btn-warning.m-2(href=`/editListing/${instrument.id}`)
-        | Edit
+      a.btn.btn-warning.m-2(href=`/editListing/${instrument._id}`)
+        | Edit 
     else
       p Listed by: #{instrument.username}
     

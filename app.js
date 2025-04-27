@@ -13,6 +13,8 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 
 app.use(cookieParser("cscie31-secret"));
 app.use(
@@ -60,8 +62,6 @@ app.use((req, res, next) => {
   res.locals.session = req.session || null;
   next();
 });
-
-app.use(bodyParser.urlencoded({ extended: false }));
 
 // Set all Directory Listings
 app.use("/", routes.directory);

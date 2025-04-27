@@ -1,28 +1,31 @@
 var express = require("express");
 var router = express.Router();
-const listingModel = require("../models/listingModel");
+const axios = require("axios");
+
+const API_BASE_URL = "http://localhost:3030/api/listings";
 
 router.get("/:userid", async (req, res) => {
-  if (!req.session.user || !req.session.user.name) {
+  let username = req.session?.user?.name;
+
+  if (!username) {
     console.error("User not found in session");
-    res.redirect("/login");
-    return
+    return res.redirect("/login");
   }
 
-  let listings;
-  await listingModel
-    .find({ username: req.session.user.name })
-    .then((data) => {
-      listings = data;
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  try {
+    // Make a GET request to your own listings API
+    const response = await axios.get(`${API_BASE_URL}/${username}`);
 
-  res.render("user", {
-    username: req.params.userid,
-    instruments: listings,
-  });
+    const listings = response.data;
+
+    res.render("user", {
+      username: username,
+      instruments: listings,
+    });
+  } catch (error) {
+    console.error("Error fetching user listings:", error.message);
+    res.status(500).send("Failed to load user listings");
+  }
 });
 
 module.exports = router;

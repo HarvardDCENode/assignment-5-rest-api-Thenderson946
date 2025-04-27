@@ -34,7 +34,18 @@ class ListingService {
 
   static userListings(userId) {
     return listingModel
-      .findById(userId)
+      .find({ username: userId })
+      .then((data) => {
+        return data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  static listingDetails(id) {
+    return listingModel
+      .findOne({ _id: id })
       .then((data) => {
         return data;
       })
@@ -44,20 +55,14 @@ class ListingService {
   }
 
   static createListing(model) {
-    console.log("Here");
     return model
       .save()
       .then((data) => {
-        res.status(200);
-        res.set({ "Content-type": "application/json" });
-        res.send(JSON.stringify(data));
+        return data;
       })
       .catch((err) => {
-        if (err) {
-          console.log(err);
-          res.status(404);
-          res.end();
-        }
+        console.error("Error saving listing to database:", err);
+        throw new Error("Failed to save listing to database");
       });
   }
 
@@ -65,14 +70,10 @@ class ListingService {
     return listingModel
       .findByIdAndUpdate(req.params.id, updatedListing)
       .then((data) => {
-        res.status(200);
-        res.set({ "Content-type": "application/json" });
-        res.send(JSON.stringify(data));
+        return data;
       })
       .catch((err) => {
-        console.log(err);
-        res.status(404);
-        res.end();
+        throw err;
       });
   }
 
